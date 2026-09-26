@@ -1,0 +1,22 @@
+skip_local_validator = true
+
+[toolchain]
+
+[features]
+resolution = true
+skip-lint = false
+
+[programs.localnet]
+bet_escrow = "HofsuPYrMhrRzpt4XFcMr4AvEu98WzTj7YPUofoEtdsv"
+
+[programs.devnet]
+bet_escrow = "HofsuPYrMhrRzpt4XFcMr4AvEu98WzTj7YPUofoEtdsv"
+
+[provider]
+cluster = "devnet"
+wallet = "~/.config/solana/id.json"
+
+[scripts]
+test = "cargo test"
+
+[hooks]
