@@ -14,6 +14,7 @@ export type EventStatus =
   | "rejected"; // AI refused the event (not provable or harmful)
 
 export type ProofType = "photo" | "video" | "document" | "screenshot" | "link";
+export type EventCategory = "sports" | "study" | "work" | "life";
 
 export interface EventOption {
   id: string;
@@ -26,6 +27,7 @@ export interface Event {
   description: string;
   creator: WalletAddress;
   subject: string; // the person the event is about
+  category: EventCategory;
   rules: string[];
   options: EventOption[];
   proofType: ProofType;
@@ -94,12 +96,13 @@ export interface Vote {
   castAt: IsoDate;
 }
 
+// All ratios are 0..1.
 export interface TrustScore {
-  total: number; // 0..100
-  kyc: number;
-  bettingHistory: number;
-  judgingAccuracy: number;
-  accountAge: number;
+  bettor: number;
+  volunteer: number;
+  proofOnTime: number;
+  evidenceAccepted: number;
+  disputesLost: number; // count
 }
 
 export interface UserProfile {

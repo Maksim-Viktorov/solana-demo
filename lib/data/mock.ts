@@ -3,7 +3,9 @@ import type { AiVerdict, BlindCaseView, CaseOutcome, Event, UserProfile, Volunte
 import { seedCases, seedEvents, seedEvidence, seedStakes, seedUsers, seedVerdicts, seedVotes } from "./seed";
 
 // In-memory store, kept on globalThis so it survives dev hot reloads.
-// Resets when the server restarts.
+// Resets when the server restarts. Bump STORE_VERSION whenever the seed or
+// types change shape, so a running dev server picks up the new seed.
+const STORE_VERSION = 2;
 function createStore() {
   return {
     events: structuredClone(seedEvents),
@@ -15,8 +17,9 @@ function createStore() {
     users: structuredClone(seedUsers),
   };
 }
-const g = globalThis as unknown as { __mockStore?: ReturnType<typeof createStore> };
-const db = (g.__mockStore ??= createStore());
+const g = globalThis as unknown as { __mockStore?: ReturnType<typeof createStore> & { version: number } };
+if (g.__mockStore?.version !== STORE_VERSION) g.__mockStore = { ...createStore(), version: STORE_VERSION };
+const db = g.__mockStore;
 
 const MAX_ROUNDS = 3;
 const sum = (xs: string[]) => xs.reduce((a, b) => a + BigInt(b), BigInt(0)).toString();
@@ -27,7 +30,7 @@ function newUser(wallet: string): UserProfile {
     displayName: `${wallet.slice(0, 4)}...${wallet.slice(-4)}`,
     joinedAt: new Date().toISOString(),
     kycVerified: false,
-    trust: { total: 0, kyc: 0, bettingHistory: 0, judgingAccuracy: 0, accountAge: 0 },
+    trust: { bettor: 1, volunteer: 1, proofOnTime: 1, evidenceAccepted: 1, disputesLost: 0 },
   };
 }
 
@@ -87,8 +90,6 @@ export const mockDataService: DataService = {
       db.users.push(user);
     }
     user.kycVerified = true;
-    user.trust.kyc = 25;
-    user.trust.total = Math.max(user.trust.total, 25);
     return user;
   },
 
