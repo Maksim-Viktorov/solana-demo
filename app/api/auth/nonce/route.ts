@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     `${domain} wants you to sign in with your Solana account:`,
     address,
     "",
-    "Sign in to [AppName]. This does not send a transaction or cost any SOL.",
+    "Sign in to Predict IRL. This does not send a transaction or cost any SOL.",
     "",
     `URI: ${request.nextUrl.origin}`,
     "Chain ID: devnet",

@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "[AppName]",
+  title: "Predict IRL",
   description: "Bets on provable personal events, settled on Solana.",
 };
 

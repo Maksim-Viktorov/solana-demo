@@ -1,5 +1,7 @@
+import Link from "next/link";
 import { getSessionWallet, getViewer } from "@/lib/auth/session";
 import { data } from "@/lib/data";
+import { PlusIcon } from "./icons";
 import { WalletButton } from "./wallet-button";
 
 export async function TopBar() {
@@ -8,14 +10,20 @@ export async function TopBar() {
   const user = viewer ? await data.getUser(viewer.wallet) : null;
 
   return (
-    <header className="flex h-16 items-center justify-end gap-4 border-b border-border px-6">
+    <header className="flex h-20 items-center justify-end gap-3 px-8">
       {viewer?.isDemo ? (
-        <span className="text-xs text-muted">Demo: viewing as {user?.displayName ?? "seed user"} until you sign in</span>
+        <span className="mr-auto rounded-full border border-border px-3 py-1 text-xs text-muted">
+          Demo mode: viewing as {user?.displayName ?? "seed user"} until you sign in
+        </span>
       ) : null}
-      {user?.kycVerified ? (
-        <span className="rounded-full bg-accent px-3 py-1 text-xs font-medium text-black">KYC verified</span>
-      ) : null}
-      <WalletButton sessionWallet={sessionWallet} />
+      <Link
+        href="/events/new"
+        className="flex items-center gap-1.5 rounded-xl bg-accent px-4 py-2.5 text-sm font-semibold text-white"
+      >
+        <PlusIcon className="h-4 w-4" />
+        New prediction
+      </Link>
+      <WalletButton sessionWallet={sessionWallet} kycVerified={!viewer?.isDemo && !!user?.kycVerified} />
     </header>
   );
 }

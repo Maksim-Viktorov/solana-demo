@@ -26,17 +26,20 @@
   color: transparent;
 }
 
-html {
-  color-scheme: dark;
-}
+/* In @layer base so utility classes (e.g. text-emerald-400) can override. */
+@layer base {
+  html {
+    color-scheme: dark;
+  }
 
-body {
-  background: var(--color-background);
-  color: var(--color-body);
-}
+  body {
+    background: var(--color-background);
+    color: var(--color-body);
+  }
 
-h1,
-h2,
-h3 {
-  color: var(--color-heading);
+  h1,
+  h2,
+  h3 {
+    color: var(--color-heading);
+  }
 }
