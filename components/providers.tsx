@@ -5,13 +5,15 @@ import { solanaDevnetRpc } from "@solana/kit-plugin-rpc";
 import { walletSigner } from "@solana/kit-plugin-wallet";
 import { ClientProvider } from "@solana/react";
 
-export const DEVNET_RPC_URL = "https://api.devnet.solana.com";
+export const RPC_URL = process.env.NEXT_PUBLIC_RPC_URL ?? "https://api.devnet.solana.com";
 
 // One client for the whole app, devnet only. The connected wallet fills the
 // payer role. Version 0 transactions are signed by every current wallet.
+// Wallets are discovered through the Wallet Standard, which covers Phantom,
+// Solflare and Backpack without per-wallet adapters.
 export const client = createClient()
   .use(walletSigner({ chain: "solana:devnet" }))
-  .use(solanaDevnetRpc({ rpcUrl: DEVNET_RPC_URL, transactionConfig: { version: 0 } }));
+  .use(solanaDevnetRpc({ rpcUrl: RPC_URL, transactionConfig: { version: 0 } }));
 
 export type AppClient = Awaited<typeof client>;
 
